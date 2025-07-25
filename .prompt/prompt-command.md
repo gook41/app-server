@@ -1,6 +1,6 @@
 ---
-filename: app-server-request.md
-description: Gemini CLI App Server 프로젝트의 작업 요청 형식을 정의하는 문서입니다.
+filename: prompt-command.md
+description: 프로젝트의 작업 요청 형식을 정의하는 문서입니다.
 gemini_cli: 사용자 명령어 파싱, 적절한 응답 형식 선택, 워크플로 실행, 명령어별 맞춤 처리
 ---
 

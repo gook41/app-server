@@ -1,12 +1,12 @@
 ---
-filename: app-server-roadmap.md
+filename: progress-roadmap.md
 description: gook41 프로젝트의 서버 개발 환경과 일정 계획을 정의하는 문서입니다.
 gemini_cli: 프로젝트 기술 스택 참조, 아키텍처 결정 시 가이드라인 제공, 개발 환경 설정 지원
 ---
 
 # INDEX
 
-[app-server-roadmap.md]는 gook41 WMS(Warehouse Management System) 프로젝트의 전체적인 로드맵과 기술 스택을 정의하는 문서입니다.
+[progress-roadmap.md]는 gook41 WMS(Warehouse Management System) 프로젝트의 전체적인 로드맵과 기술 스택을 정의하는 문서입니다.
 프로젝트의 목표, 개발 환경, 기술적 요구사항, 엔티티 설계 등 프로젝트의 큰 그림을 제공합니다.
 
 ## 프로젝트 개요
