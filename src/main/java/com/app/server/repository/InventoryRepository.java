@@ -23,4 +23,6 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     
     @Query("SELECT i FROM Inventory i WHERE i.deleted = false ORDER BY i.updatedAt DESC")
     List<Inventory> findAllActiveOrderByUpdatedAtDesc();
+    
+    boolean existsByItemCode(String itemCode);
 }

@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -72,6 +72,14 @@ public class User {
 
             @NotBlank(message = "닉네임은 필수입니다")
             String nickname
+    ) {}
+
+    public static record UpdateRequest(
+            @Email(message = "올바른 이메일 형식이 아닙니다")
+            String email,
+            String nickname,
+            String name,
+            UserRole role
     ) {}
 
     public static record Response(

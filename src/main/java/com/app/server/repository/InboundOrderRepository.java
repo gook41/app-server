@@ -31,4 +31,8 @@ public interface InboundOrderRepository extends JpaRepository<InboundOrder, Long
     
     @Query("SELECT io FROM InboundOrder io WHERE io.deleted = false ORDER BY io.createdAt DESC")
     List<InboundOrder> findAllActiveOrderByCreatedAtDesc();
+    
+    boolean existsByOrderNumber(String orderNumber);
+    
+    long countByStatus(OrderStatus status);
 }

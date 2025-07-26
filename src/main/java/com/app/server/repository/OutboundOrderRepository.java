@@ -31,4 +31,8 @@ public interface OutboundOrderRepository extends JpaRepository<OutboundOrder, Lo
     
     @Query("SELECT oo FROM OutboundOrder oo WHERE oo.deleted = false ORDER BY oo.createdAt DESC")
     List<OutboundOrder> findAllActiveOrderByCreatedAtDesc();
+    
+    boolean existsByOrderNumber(String orderNumber);
+    
+    long countByStatus(OrderStatus status);
 }
