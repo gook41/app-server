@@ -1,9 +1,9 @@
 package com.app.server.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,26 +20,27 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
-public class User {
+@Table(name = "inventory")
+public class Inventory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String itemName;
+
     @Column(nullable = false, unique = true)
-    private String nickname;
+    private String itemCode;
 
     @Column(nullable = false)
-    private String password;
+    private Integer quantity;
 
-    @Column(nullable = false, unique = true)
-    private String email;
+    @Column(nullable = false)
+    private String location;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-
-    private String name;
+    @Column(nullable = false)
+    private String qrCode;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -59,35 +60,35 @@ public class User {
 
     private boolean deleted = false; // Soft delete 필드
 
-    // 비밀번호 암호화는 Spring Security에서 처리
-
     // DTO Classes - 도메인 응집도를 높이기 위한 static inner classes
     public static record CreateRequest(
-            @NotBlank(message = "이메일은 필수입니다")
-            @Email(message = "올바른 이메일 형식이 아닙니다")
-            String email,
-            @NotBlank(message = "비밀번호는 필수입니다")
-            @Size(min = 8, message = "비밀번호는 최소 8자 이상이어야 합니다")
-            String password,
-
-            @NotBlank(message = "닉네임은 필수입니다")
-            String nickname
+            @NotBlank(message = "상품명은 필수입니다")
+            String itemName,
+            @NotBlank(message = "상품 코드는 필수입니다")
+            String itemCode,
+            @NotNull(message = "수량은 필수입니다")
+            @Min(value = 0, message = "수량은 0 이상이어야 합니다")
+            Integer quantity,
+            @NotBlank(message = "위치는 필수입니다")
+            String location,
+            @NotBlank(message = "QR 코드는 필수입니다")
+            String qrCode
     ) {}
 
     public static record UpdateRequest(
-            @Email(message = "올바른 이메일 형식이 아닙니다")
-            String email,
-            String nickname,
-            String name,
-            UserRole role
+            String itemName,
+            @Min(value = 0, message = "수량은 0 이상이어야 합니다")
+            Integer quantity,
+            String location
     ) {}
 
     public static record Response(
             Long id,
-            String email,
-            String nickname,
-            String name,
-            UserRole role,
+            String itemName,
+            String itemCode,
+            Integer quantity,
+            String location,
+            String qrCode,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
             String createdBy,

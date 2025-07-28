@@ -1,0 +1,36 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+
+# JWT 설정 (테스트용)
+jwt:
+  secret: dGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3Ro  # Base64 인코딩된 32바이트+
+  expiration: 3600 # 1시간
+
+# 로깅 설정
+logging:
+  level:
+    com.app.server: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

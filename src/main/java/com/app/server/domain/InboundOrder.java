@@ -1,9 +1,9 @@
 package com.app.server.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,30 +20,38 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
-public class User {
+@Table(name = "inbound_order")
+public class InboundOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String nickname;
+    private String orderNumber;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false, unique = true)
-    private String email;
+    private Long supplierId;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @Column(nullable = false)
+    private OrderStatus status;
 
-    private String name;
+    @Column(nullable = false)
+    private Integer totalQuantity;
+
+    @Column(nullable = false)
+    private Long userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    private User user;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    private LocalDateTime processedAt;
 
     @LastModifiedDate
     @Column(nullable = false)
@@ -59,36 +67,35 @@ public class User {
 
     private boolean deleted = false; // Soft delete 필드
 
-    // 비밀번호 암호화는 Spring Security에서 처리
-
     // DTO Classes - 도메인 응집도를 높이기 위한 static inner classes
     public static record CreateRequest(
-            @NotBlank(message = "이메일은 필수입니다")
-            @Email(message = "올바른 이메일 형식이 아닙니다")
-            String email,
-            @NotBlank(message = "비밀번호는 필수입니다")
-            @Size(min = 8, message = "비밀번호는 최소 8자 이상이어야 합니다")
-            String password,
-
-            @NotBlank(message = "닉네임은 필수입니다")
-            String nickname
+            @NotBlank(message = "주문 번호는 필수입니다")
+            String orderNumber,
+            @NotNull(message = "공급업체 ID는 필수입니다")
+            Long supplierId,
+            @NotNull(message = "총 수량은 필수입니다")
+            @Min(value = 1, message = "총 수량은 1 이상이어야 합니다")
+            Integer totalQuantity,
+            @NotNull(message = "사용자 ID는 필수입니다")
+            Long userId
     ) {}
 
     public static record UpdateRequest(
-            @Email(message = "올바른 이메일 형식이 아닙니다")
-            String email,
-            String nickname,
-            String name,
-            UserRole role
+            OrderStatus status,
+            Integer totalQuantity,
+            LocalDateTime processedAt
     ) {}
 
     public static record Response(
             Long id,
-            String email,
-            String nickname,
-            String name,
-            UserRole role,
+            String orderNumber,
+            Long supplierId,
+            OrderStatus status,
+            Integer totalQuantity,
+            Long userId,
+            String userNickname,
             LocalDateTime createdAt,
+            LocalDateTime processedAt,
             LocalDateTime updatedAt,
             String createdBy,
             String updatedBy,

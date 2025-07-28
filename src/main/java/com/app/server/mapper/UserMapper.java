@@ -4,6 +4,7 @@ import com.app.server.domain.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
 
 /**
  * User 엔티티와 DTO 간의 자동 매핑을 처리하는 MapStruct
@@ -31,4 +32,18 @@ public interface UserMapper {
      * @return 사용자 응답 DTO
      */
     User.Response toResponse(User user);
+
+    /**
+     * UpdateRequest DTO를 기존 User 엔티티에 매핑
+     * @param request 사용자 수정 요청 DTO
+     * @param user 업데이트할 기존 User 엔티티
+     */
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true) // 비밀번호는 별도 API로 변경
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "updatedBy", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    void updateEntity(User.UpdateRequest request, @MappingTarget User user);
 }
