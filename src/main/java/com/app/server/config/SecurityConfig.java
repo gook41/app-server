@@ -52,7 +52,8 @@ public class SecurityConfig {
                 // 관리자 전용 엔드포인트
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // 나머지는 인증 필요
-                .anyRequest().authenticated()
+//                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
             )
             .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
