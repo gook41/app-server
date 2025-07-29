@@ -17,4 +17,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByNickname(String nickname);
     
     long countByDeletedFalse();
+    /**
+     * 소셜 로그인 제공자와 제공자 ID로 사용자를 찾는다.
+     * @param provider "google", "kakao" 등
+     * @param providerId 소셜 로그인 제공자가 부여한 고유 ID
+     */
+    Optional<User> findByProviderAndProviderId(String provider, String providerId);
 }

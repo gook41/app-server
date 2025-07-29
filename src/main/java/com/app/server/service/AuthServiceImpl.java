@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new InvalidCredentialsException());
 
-        // 소프트 삭제된 사용자 체크
+        // 삭제된 사용자 체크
         if (user.isDeleted()) {
             throw new InvalidCredentialsException("삭제된 계정입니다.");
         }

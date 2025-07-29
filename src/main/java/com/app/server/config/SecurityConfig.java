@@ -24,6 +24,8 @@ public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtRequestFilter jwtRequestFilter;
+//    private final CustomOAuth2UserService customOAuth2UserService;
+//    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, 
                          JwtRequestFilter jwtRequestFilter) {
