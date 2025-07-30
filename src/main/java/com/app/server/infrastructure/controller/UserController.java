@@ -1,15 +1,16 @@
 package com.app.server.infrastructure.controller;
 
 
-import com.app.server.domain.User;
-import com.app.server.mapper.UserMapper;
-import com.app.server.service.UserService;
+import com.app.server.application.mapper.UserMapper;
+import com.app.server.domain.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,67 +21,49 @@ public class UserController {
     private final UserMapper userMapper;
 
 
-    @PostMapping("/")
-    public User.Response createUser(@Valid @RequestBody User.CreateRequest request) {
-        // MapStruct를 사용한 DTO → Entity 변환
-        User user = userMapper.toEntity(request);
-
-        // 비즈니스 로직은 서비스에서 처리
-        User savedUser = userService.saveUser(user);
-
-        // MapStruct를 사용한 Entity → DTO 변환
-        return userMapper.toResponse(savedUser);
-    }
-
     @GetMapping("/{id}")
-    public User.Response getUserById(@PathVariable Long id) {
-        // 비즈니스 로직은 서비스에서 처리
-        User user = userService.findUserById(id);
-
-        // MapStruct를 사용한 Entity → DTO 변환
-        return userMapper.toResponse(user);
+    public ResponseEntity<AuthController.UserResponse> getUserById(@PathVariable Long id) {
+        var user = userService.findUserById(id);
+        var responseDto = userMapper.toResponse(user);
+        return ResponseEntity.ok(responseDto);
     }
 
     @PutMapping("/{id}")
-    public User.Response updateUser(@PathVariable Long id, @Valid @RequestBody User.UpdateRequest request) {
-        // 기존 사용자 조회
-        User existingUser = userService.findUserById(id);
-
-        // UpdateRequest를 기존 엔티티에 매핑
-        userMapper.updateEntity(request, existingUser);
-
-        // 비즈니스 로직은 서비스에서 처리
-        User updatedUser = userService.updateUser(id,request);
-
-        // MapStruct를 사용한 Entity → DTO 변환
-        return userMapper.toResponse(updatedUser);
+    public ResponseEntity<AuthController.UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody AuthController.UserUpdateRequest request) {
+        var command = new UserService.UserUpdateCommand(
+                request.email(),
+                request.nickname(),
+                request.name(),
+                request.role()
+        );
+        var user = userService.updateUser(id, command);
+        var responseDto = userMapper.toResponse(user);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        // 소프트 삭제 처리
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        // 내용이 없는 성공적인 응답은 204 No Content가 국룰
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/")
-    public List<User.Response> getAllUsers() {
-        // 전체 사용자 목록 조회
-        List<User> users = userService.findAllUsers();
+//    @GetMapping
+//    public ResponseEntity<List<AuthController.UserResponse>> getAllUsers() {
+//        var users = userService.findAllUsers();
+//        var responseDtos = users.stream()
+//                .map(userMapper::toResponse)
+//                .toList();
+//        return ResponseEntity.ok(responseDtos);
+//    }
 
-        // MapStruct를 사용한 Entity → DTO 변환
-        return users.stream()
+    @GetMapping
+    public ResponseEntity<List<AuthController.UserResponse>> getActiveUsers() {
+        var users = userService.findActiveUsers();
+        var responseDtos = users.stream()
                 .map(userMapper::toResponse)
-                .toList();
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responseDtos);
     }
-
-    @GetMapping("/search")
-    public User.Response getUserByEmail(@RequestParam String email) {
-        // 이메일로 사용자 검색
-        User user = userService.findUserByEmail(email)
-                .orElseThrow(() -> new com.app.server.exception.ResourceNotFoundException("사용자를 찾을 수 없습니다: " + email));
-
-        // MapStruct를 사용한 Entity → DTO 변환
-        return userMapper.toResponse(user);
-    }
-
 }
+

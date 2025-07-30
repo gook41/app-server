@@ -1,4 +1,4 @@
-package com.app.server.domain.BusinessExceptions;
+package com.app.server.domain.exceptions;
 
 /**
  * 중복된 닉네임으로 update,가입 시도 시 발생하는 예외

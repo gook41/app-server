@@ -1,12 +1,12 @@
 package com.app.server.application.service;
 
-import com.app.server.domain.User;
-import com.app.server.domain.UserRole;
-import com.app.server.domain.UserRepository;
-import com.app.server.domain.service.TokenService;
-import com.app.server.domain.exception.DuplicateEmailException;
-import com.app.server.infrastructure.controller.AuthController.*;
 import com.app.server.application.mapper.UserMapper;
+import com.app.server.domain.User;
+import com.app.server.domain.UserRepository;
+import com.app.server.domain.UserRole;
+import com.app.server.domain.service.TokenService;
+import com.app.server.infrastructure.controller.AuthController.SignInRequest;
+import com.app.server.infrastructure.controller.AuthController.SignInResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,9 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AuthService 단위 테스트")
@@ -65,7 +65,7 @@ class AuthServiceTest {
         when(tokenService.createAndSaveRefreshToken(any())).thenReturn("refresh-token");
 
         // When
-        SignInResponse response = authService.signIn(request);
+        SignInResponse response = authService.signIn(request.email(),request.password());
 
         // Then
         assertThat(response).isNotNull();

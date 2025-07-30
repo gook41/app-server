@@ -1,6 +1,5 @@
 package com.app.server.application.mapper;
 
-import com.app.server.dto.UnifiedProviderInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

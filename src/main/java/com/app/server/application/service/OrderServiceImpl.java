@@ -1,14 +1,10 @@
 package com.app.server.application.service;
 
 
-import com.app.server.domain.InboundOrder;
-import com.app.server.domain.OrderStatus;
-import com.app.server.domain.OutboundOrder;
-import com.app.server.exception.BadRequestException;
-import com.app.server.exception.ResourceNotFoundException;
-import com.app.server.repository.InboundOrderRepository;
-import com.app.server.repository.OutboundOrderRepository;
-import com.app.server.service.OrderService;
+import com.app.server.domain.*;
+import com.app.server.domain.service.OrderService;
+import com.app.server.infrastructure.exceptions.BadRequestException;
+import com.app.server.infrastructure.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

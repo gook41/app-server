@@ -1,6 +1,6 @@
 package com.app.server.application.mapper;
 
-import com.app.server.domain.User;
+import com.app.server.infrastructure.controller.AuthController;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -24,7 +24,7 @@ public interface Oauth2Mapper {
             String message,
             String accessToken,
             String refreshToken,
-            User.Response user
+            AuthController.UserResponse user
     ) {
     }
 
@@ -42,7 +42,7 @@ public interface Oauth2Mapper {
 
     public static record SignUpResponse(
             String message,
-            User.Response user
+            AuthController.UserResponse user
     ) {
     }
 

@@ -1,6 +1,5 @@
-package com.app.server.dto;
+package com.app.server.application.mapper;
 
-import com.app.server.mapper.OAuth2ProviderInfo;
 
 public record UnifiedProviderInfo(
         String providerId,

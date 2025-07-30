@@ -2,10 +2,10 @@ package com.app.server.application.service;
 
 
 import com.app.server.domain.Inventory;
-import com.app.server.exception.BadRequestException;
-import com.app.server.exception.ResourceNotFoundException;
-import com.app.server.repository.InventoryRepository;
-import com.app.server.service.InventoryService;
+import com.app.server.domain.InventoryRepository;
+import com.app.server.domain.service.InventoryService;
+import com.app.server.infrastructure.exceptions.BadRequestException;
+import com.app.server.infrastructure.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

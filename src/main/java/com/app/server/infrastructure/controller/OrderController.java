@@ -1,10 +1,10 @@
 package com.app.server.infrastructure.controller;
 
+import com.app.server.application.mapper.OrderMapper;
 import com.app.server.domain.InboundOrder;
 import com.app.server.domain.OrderStatus;
 import com.app.server.domain.OutboundOrder;
-import com.app.server.mapper.OrderMapper;
-import com.app.server.service.OrderService;
+import com.app.server.domain.service.OrderService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

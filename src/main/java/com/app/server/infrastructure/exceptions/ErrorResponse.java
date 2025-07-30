@@ -1,4 +1,4 @@
-package com.app.server.infrastructure.exception;
+package com.app.server.infrastructure.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;

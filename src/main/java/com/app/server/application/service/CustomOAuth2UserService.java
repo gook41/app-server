@@ -2,10 +2,11 @@ package com.app.server.application.service;
 
 
 import com.app.server.application.mapper.OAuth2AttributeMapper;
+import com.app.server.application.mapper.UnifiedProviderInfo;
+import com.app.server.domain.User;
 import com.app.server.domain.UserRepository;
 import com.app.server.domain.UserRole;
-import com.app.server.dto.UnifiedProviderInfo;
-import com.app.server.security.CustomUserPrincipal;
+import com.app.server.infrastructure.security.CustomUserPrincipal;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

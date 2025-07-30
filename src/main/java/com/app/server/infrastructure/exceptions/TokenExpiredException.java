@@ -1,4 +1,6 @@
-package com.app.server.infrastructure.exception;
+package com.app.server.infrastructure.exceptions;
+
+import com.app.server.domain.exceptions.AuthenticationException;
 
 /**
  * 만료된 토큰으로 인한 인증 실패 예외

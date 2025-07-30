@@ -1,6 +1,4 @@
-package com.app.server.infrastructure.exception;
-
-import com.app.server.domain.BusinessExceptions.BusinessException;
+package com.app.server.domain.exceptions;
 
 /**
  * 인증 관련 예외를 처리하는 기본 예외 클래스

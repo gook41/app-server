@@ -1,9 +1,9 @@
 package com.app.server.application.service;
 
-
 import com.app.server.domain.Log;
-import com.app.server.exception.ResourceNotFoundException;
-import com.app.server.repository.LogRepository;
+import com.app.server.domain.LogRepository;
+import com.app.server.domain.service.LogService;
+import com.app.server.infrastructure.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class LogServiceImpl implements com.app.server.service.LogService {
+public class LogServiceImpl implements LogService {
 
     private final LogRepository logRepository;
 

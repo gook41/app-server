@@ -1,6 +1,4 @@
-package com.app.server.domain.BusinessExceptions;
-
-import com.app.server.infrastructure.exception.AuthenticationException;
+package com.app.server.domain.exceptions;
 
 /**
  * 잘못된 자격 증명(이메일/비밀번호)으로 인한 인증 실패 예외

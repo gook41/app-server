@@ -1,6 +1,5 @@
-package com.app.server.repository;
+package com.app.server.domain;
 
-import com.app.server.domain.Log;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

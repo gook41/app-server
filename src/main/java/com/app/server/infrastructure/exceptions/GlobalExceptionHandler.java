@@ -1,6 +1,6 @@
-package com.app.server.infrastructure.exception;
+package com.app.server.infrastructure.exceptions;
 
-import com.app.server.domain.BusinessExceptions.BusinessException;
+import com.app.server.domain.exceptions.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;

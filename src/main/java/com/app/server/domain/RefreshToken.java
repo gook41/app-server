@@ -17,8 +17,6 @@ import java.time.LocalDateTime;
 @Table(name = "refresh_token")
 public class RefreshToken {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,7 +41,6 @@ public class RefreshToken {
     @Column(nullable = false)
     private boolean revoked = false; // 토큰 무효화 여부
 
-    // 생성자
     public RefreshToken(String token, Long userId, LocalDateTime expiryDate) {
         this.token = token;
         this.userId = userId;
@@ -62,22 +59,4 @@ public class RefreshToken {
     public void revoke() {
         this.revoked = true;
     }
-
-    // DTO Classes - 도메인 응집도를 높이기 위한 static inner classes
-    public static record Response(
-            Long id,
-            String token,
-            Long userId,
-            String userEmail,
-            LocalDateTime expiryDate,
-            LocalDateTime createdAt,
-            Boolean revoked,
-            Boolean expired
-    ) {}
-
-    public static record CreateRequest(
-            String token,
-            Long userId,
-            LocalDateTime expiryDate
-    ) {}
 }

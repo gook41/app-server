@@ -1,4 +1,4 @@
-package com.app.server.domain.BusinessExceptions;
+package com.app.server.domain.exceptions;
 
 
 /**

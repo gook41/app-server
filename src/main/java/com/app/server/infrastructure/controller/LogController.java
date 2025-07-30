@@ -1,8 +1,8 @@
 package com.app.server.infrastructure.controller;
 
+import com.app.server.application.mapper.LogMapper;
 import com.app.server.domain.Log;
-import com.app.server.mapper.LogMapper;
-import com.app.server.service.LogService;
+import com.app.server.domain.service.LogService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

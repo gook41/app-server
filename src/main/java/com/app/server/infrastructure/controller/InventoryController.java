@@ -1,8 +1,8 @@
 package com.app.server.infrastructure.controller;
 
+import com.app.server.application.mapper.InventoryMapper;
 import com.app.server.domain.Inventory;
-import com.app.server.mapper.InventoryMapper;
-import com.app.server.service.InventoryService;
+import com.app.server.domain.service.InventoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
