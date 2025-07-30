@@ -47,9 +47,10 @@ public class AuthServiceImpl implements AuthService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new InvalidCredentialsException();
         }
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user.getEmail(), user.getPassword());
+        // 올바른 인증 객체 생성 방식
+        // principal(누구), credentials(증거, 여긴 null), authorities(권한) 3개를 다 넣어줘야 "인증된" 토큰이 됨.
+        CustomUserPrincipal principal = new CustomUserPrincipal(user);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = tokenService.generateAccessToken(authentication);

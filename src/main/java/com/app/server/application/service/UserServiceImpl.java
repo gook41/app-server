@@ -43,11 +43,11 @@ public class UserServiceImpl implements UserService {
     public User updateUser(Long id, UserUpdateCommand command) {
         User existingUser = findUserById(id);
 
-        if (!existingUser.getNickname().equals(command.nickname()) &&
+        if (command.nickname()!=null && !command.nickname().equals(existingUser.getNickname()) &&
                 userRepository.existsByNickname(command.nickname())) {
             throw new DuplicateNicknameException("이미 사용 중인 닉네임입니다: " + command.nickname());
         }
-        if (!existingUser.getEmail().equals(command.email()) &&
+        if (command.email()!=null && !command.email().equals(existingUser.getEmail()) &&
                 userRepository.existsByEmail(command.email())) {
             throw new DuplicateEmailException("이미 사용 중인 E-mail입니다: " + command.email());
         }
@@ -99,15 +99,17 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         User user = findUserById(id);
         user.setDeleted(true);
-        userRepository.save(user);
+//        userRepository.save(user); @Transactional에 의해 더티 체킹으로 자동 저장됨
+
     }
+
 
     @Override
     public void restoreUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
         user.setDeleted(false);
-        userRepository.save(user);
+//        userRepository.save(user); @Transactional에 의해 더티 체킹으로 자동 저장됨
     }
 
     @Override
