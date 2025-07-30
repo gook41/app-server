@@ -1,0 +1,69 @@
+package com.app.server.domain.service;
+
+
+import com.app.server.domain.User;
+
+public interface AuthService {
+
+    /**
+     * 사용자 로그인 처리
+     * @param request 로그인 요청 (이메일, 비밀번호)
+     * @return 로그인 응답 (JWT 토큰, 사용자 정보)
+     */
+    SignInResponse signIn(SignInRequest request);
+
+    /**
+     * 사용자 회원가입 처리
+     * @param request 회원가입 요청 (이메일, 비밀번호, 닉네임)
+     * @return 생성된 사용자 엔티티
+     */
+    User signUp(SignUpRequest request);
+
+    /**
+     * 사용자 로그아웃 처리 (토큰 무효화)
+     * @param accessToken 무효화할 액세스 토큰
+     */
+    void signOut(String accessToken);
+
+    /**
+     * 리프레시 토큰으로 새로운 액세스 토큰 발급
+     * @param request 리프레시 토큰 요청
+     * @return 새로운 토큰 응답
+     */
+    RefreshTokenResponse refreshToken(RefreshTokenRequest request);
+
+    // 아래 4개 메소드는 AuthService의 책임이 아님.
+    // 이딴 기술적인건 JwtTokenProvider 같은 놈한테 던져야지.
+    // String generateAccessToken(User user);
+    // String generateRefreshToken(User user);
+    // boolean validateToken(String token);
+    // String getEmailFromToken(String token);
+//
+//    /**
+//     * JWT 토큰 생성
+//     * @param user 사용자 엔티티
+//     * @return JWT 액세스 토큰
+//     */
+//    String generateAccessToken(User user);
+//
+//    /**
+//     * 리프레시 토큰 생성 및 저장
+//     * @param user 사용자 엔티티
+//     * @return 리프레시 토큰
+//     */
+//    String generateRefreshToken(User user);
+//
+//    /**
+//     * 토큰 유효성 검증
+//     * @param token JWT 토큰
+//     * @return 유효성 여부
+//     */
+//    boolean validateToken(String token);
+//
+//    /**
+//     * 토큰에서 사용자 이메일 추출
+//     * @param token JWT 토큰
+//     * @return 사용자 이메일
+//     */
+//    String getEmailFromToken(String token);
+}
