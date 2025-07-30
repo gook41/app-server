@@ -1,5 +1,9 @@
 spring:
   config:
+    import: "optional:classpath:oauth.yml" # oauth.yml 파일을 불러옵니다.
+---
+spring:
+  config:
     activate:
       on-profile: dev
 
@@ -17,10 +21,10 @@ spring:
       hibernate:
         format_sql: true
 
-
-# JWT 설정 (테스트용)
+# JWT 설정 (개발용)
 jwt:
-  secret: dGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3Ro  # Base64 인코딩된 32바이트+
+  # 환경 변수가 없으면 기본값을 사용합니다.
+  secret: ${JWT_SECRET:dGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3Ro}
   expiration: 3600 # 1시간
 
 # 로깅 설정
@@ -47,16 +51,15 @@ spring:
       ddl-auto: validate
     show-sql: false
 
-
-  # JWT 설정 (테스트용)
+  # JWT 설정 (운영용)
   jwt:
-    secret: dGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3Ro  # Base64 인코딩된 32바이트+
+    # 운영 환경에서는 반드시 환경 변수로 설정해야 합니다.
+    secret: ${JWT_SECRET}
     expiration: 3600 # 1시간
 
   # 로깅 설정
   logging:
     level:
-      com.app.server: DEBUG
-      org.springframework.security: DEBUG
-      org.hibernate.SQL: DEBUG
-      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+      com.app.server: INFO
+      org.springframework.security: INFO
+      org.hibernate.SQL: WARN

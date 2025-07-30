@@ -4,24 +4,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@Table(name = "users")
-public class User {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames ={"provider","providerId"})
+})
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +26,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
 
     @Column(nullable = false, unique = true)
@@ -41,24 +37,13 @@ public class User {
 
     private String name;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @Column(length = 20)
+    private String provider;
 
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    @Column(length = 255)
+    private String providerId;
 
-    @CreatedBy
-    @Column(nullable = false, updatable = false)
-    private String createdBy;
-
-    @LastModifiedBy
-    @Column(nullable = false)
-    private String updatedBy;
-
-    private boolean deleted = false; // Soft delete 필드
-
+    private boolean deleted = false; // delete 필드
     // 비밀번호 암호화는 Spring Security에서 처리
 
     // DTO Classes - 도메인 응집도를 높이기 위한 static inner classes
@@ -72,7 +57,8 @@ public class User {
 
             @NotBlank(message = "닉네임은 필수입니다")
             String nickname
-    ) {}
+    ) {
+    }
 
     public static record UpdateRequest(
             @Email(message = "올바른 이메일 형식이 아닙니다")
@@ -80,7 +66,8 @@ public class User {
             String nickname,
             String name,
             UserRole role
-    ) {}
+    ) {
+    }
 
     public static record Response(
             Long id,
@@ -93,5 +80,6 @@ public class User {
             String createdBy,
             String updatedBy,
             Boolean deleted
-    ) {}
+    ) {
+    }
 }

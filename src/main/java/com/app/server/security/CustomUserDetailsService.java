@@ -2,6 +2,7 @@ package com.app.server.security;
 
 import com.app.server.domain.User;
 import com.app.server.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,20 +14,23 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Service
+
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
 
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
 
-        // 소프트 삭제된 사용자는 로그인 불가
+        // 삭제된 사용자는 로그인 불가
         if (user.isDeleted()) {
             throw new UsernameNotFoundException("삭제된 사용자입니다: " + email);
         }
