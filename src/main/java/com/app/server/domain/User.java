@@ -8,23 +8,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames ={"provider","providerId"})
 })
 @Entity
-public class User {
+public class User extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,24 +44,9 @@ public class User {
     @Column(length = 255)
     private String providerId;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @CreatedBy
-    @Column(nullable = false, updatable = false)
-    private String createdBy;
-
-    @LastModifiedBy
-    @Column(nullable = false)
-    private String updatedBy;
-
     private boolean deleted = false; // delete 필드
     // 비밀번호 암호화는 Spring Security에서 처리
+
 
     @Builder
     public User(String nickname, String password, String email, UserRole role, String name, String provider, String providerId ) {

@@ -5,7 +5,7 @@ import com.app.server.domain.UserRole;
 import com.app.server.dto.UnifiedProviderInfo;
 import com.app.server.mapper.OAuth2AttributeMapper;
 import com.app.server.repository.UserRepository;
-import com.app.server.security.CustomUserDetailsService;
+import com.app.server.security.CustomUserPrincipal;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -38,7 +38,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 4. Unified된 info로 DB에  유저 조회. 없으면 가입.
         User user = findOrRegisterUser(providerInfo);
 
-        return new CustomUserDetailsService.CustomUserPrincipal(user);
+        return new CustomUserPrincipal(user, attributes);
         }
     private UnifiedProviderInfo mapToUnifiedInfo(String registrationId, Map<String,Object> attributes) {
         return switch (registrationId) {
@@ -51,14 +51,23 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     // 이 메소드는 User를 찾거나, 없으면 새로 만드는 팩토리 역할을 함
     private User findOrRegisterUser(UnifiedProviderInfo providerInfo) {
-        // ... (DB 조회 및 저장 로직) ...
-        return userRepository.findByProviderAndProviderId(providerInfo.provider(), providerInfo.providerId())
+        // provider+providerId 조합 대신, 이메일로 유저를 식별해서 계정 중복생성 방지.
+        return userRepository.findByEmail(providerInfo.email())
+                .map(user -> {
+                    // 이메일로 유저를 찾았는데, provider 정보가 비어있거나(일반 회원가입 유저) 다른 provider라면
+                    // 기존 계정에 새로운 소셜 계정을 연결(update)해준다.
+                    if (user.getProvider() == null || !user.getProvider().equals(providerInfo.provider())) {
+                        user.setProvider(providerInfo.provider());
+                        user.setProviderId(providerInfo.providerId());
+                        // @Transactional 덕분에 메소드 끝나면 알아서 더티 체킹으로 DB에 update 쿼리 날아감.
+                    }
+                    return user;
+                })
                 .orElseGet(() -> {
-                // 없으면 새로 만들어서 저장 (회원가입)
+                    // 이메일로 유저를 못찾았으면 신규 유저 새로 만들어서 저장.
                     User newUser = User.builder()
                             .email(providerInfo.email()) // 이메일은 필수
-                            // 닉네임 중복 방지를 위해 providerId 일부를 붙여줌. 이건 나중에 바꿀 수 있게 해야 함.
-                            .nickname(providerInfo.nickname() + "_" + providerInfo.providerId().substring(0, 6))
+                            .nickname(generateUniqueNickname(providerInfo.nickname())) // 닉네임 중복 처리
                             .provider(providerInfo.provider()) // "google", "kakao" 등 저장
                             .providerId(providerInfo.providerId()) // 소셜 서비스의 고유 ID 저장
                             .role(UserRole.USER) // 기본 역할 부여
@@ -66,7 +75,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     return userRepository.save(newUser);
                 });
     }
+
+    // 닉네임 중복을 피하기 위한 헬퍼 메소드.
+    private String generateUniqueNickname(String nickname) {
+        String baseNickname = (nickname == null || nickname.isBlank()) ? "user" : nickname;
+        String finalNickname = baseNickname;
+        int count = 1;
+        // DB에 중복된 닉네임이 없을 때까지 _1, _2, _3... 붙여봄
+        while (userRepository.existsByNickname(finalNickname)) {
+            finalNickname = baseNickname + "_" + count++;
+        }
+        return finalNickname;
+    }
 }
+
 
 
 
