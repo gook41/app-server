@@ -4,21 +4,20 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames ={"provider","providerId"})
 })
-@Entity
-public class User extends BaseEntity{
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,18 +46,6 @@ public class User extends BaseEntity{
     private boolean deleted = false; // delete 필드
     // 비밀번호 암호화는 Spring Security에서 처리
 
-
-    @Builder
-    public User(String nickname, String password, String email, UserRole role, String name, String provider, String providerId ) {
-        this.nickname = nickname;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-        this.name = name;
-        this.provider = provider;
-        this.providerId = providerId;
-        this.deleted = false; // delete 필드 초기화.
-    }
     // DTO Classes - 도메인 응집도를 높이기 위한 static inner classes
     public static record CreateRequest(
             @NotBlank(message = "이메일은 필수입니다")
