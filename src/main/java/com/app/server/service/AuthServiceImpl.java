@@ -92,12 +92,12 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // 새 사용자 생성
-        User newUser = new User();
-        newUser.setEmail(request.email());
-        newUser.setPassword(passwordEncoder.encode(request.password()));
-        newUser.setNickname(request.nickname());
-        newUser.setRole(UserRole.USER); // 기본 역할은 USER
-
+        User newUser = User.builder()
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
+                .nickname(request.nickname())
+                .role(UserRole.USER) // 기본 역할은 USER
+                .build();
         // 사용자 저장
         return userRepository.save(newUser);
     }
@@ -151,44 +151,44 @@ public class AuthServiceImpl implements AuthService {
         );
     }
 
-    @Override
-    public String generateAccessToken(User user) {
-        // JwtUtil을 사용하여 액세스 토큰 생성
-        return jwtUtil.generateToken(new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                java.util.Collections.singletonList(
-                        new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + user.getRole().name())
-                )
-        ));
-    }
-
-    @Override
-    public String generateRefreshToken(User user) {
-        // UUID를 사용하여 고유한 리프레시 토큰 생성
-        String tokenValue = UUID.randomUUID().toString();
-        
-        // 만료 시간 설정 (7일 후)
-        LocalDateTime expiryDate = LocalDateTime.now().plusDays(REFRESH_TOKEN_EXPIRY_DAYS);
-        
-        // 리프레시 토큰 엔티티 생성 및 저장
-        RefreshToken refreshToken = new RefreshToken(tokenValue, user.getId(), expiryDate);
-        refreshTokenRepository.save(refreshToken);
-        
-        return tokenValue;
-    }
-
-    @Override
-    public boolean validateToken(String token) {
-        try {
-            return !jwtUtil.isTokenExpired(token);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    @Override
-    public String getEmailFromToken(String token) {
-        return jwtUtil.getUsernameFromToken(token);
-    }
+//    @Override
+//    public String generateAccessToken(User user) {
+//        // JwtUtil을 사용하여 액세스 토큰 생성
+//        return jwtUtil.generateToken(new org.springframework.security.core.userdetails.User(
+//                user.getEmail(),
+//                user.getPassword(),
+//                java.util.Collections.singletonList(
+//                        new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+//                )
+//        ));
+//    }
+//
+//    @Override
+//    public String generateRefreshToken(User user) {
+//        // UUID를 사용하여 고유한 리프레시 토큰 생성
+//        String tokenValue = UUID.randomUUID().toString();
+//
+//        // 만료 시간 설정 (7일 후)
+//        LocalDateTime expiryDate = LocalDateTime.now().plusDays(REFRESH_TOKEN_EXPIRY_DAYS);
+//
+//        // 리프레시 토큰 엔티티 생성 및 저장
+//        RefreshToken refreshToken = new RefreshToken(tokenValue, user.getId(), expiryDate);
+//        refreshTokenRepository.save(refreshToken);
+//
+//        return tokenValue;
+//    }
+//
+//    @Override
+//    public boolean validateToken(String token) {
+//        try {
+//            return !jwtUtil.isTokenExpired(token);
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
+//
+//    @Override
+//    public String getEmailFromToken(String token) {
+//        return jwtUtil.getUsernameFromToken(token);
+//    }
 }
