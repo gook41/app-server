@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface UserService {
     // Create - signUp
+
     /**
      * 사용자 회원가입 처리
      * @param email password nickname 회원가입 요청 (이메일, 비밀번호, 닉네임)

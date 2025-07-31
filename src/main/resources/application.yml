@@ -10,6 +10,15 @@ spring:
     activate:
       on-profile: dev
 
+  flyway:
+    enabled: true                     # flyway 활성화 여부 (기본 true)
+    locations: classpath:/resources/db-migration/  # 마이그레이션 SQL 파일 위치
+    baseline-on-migrate: true         # 기존 데이터베이스가 있을 때 baseline 생성 여부
+    baseline-version: 1               # baseline 시작 버전 (기본 1)
+    sql-migration-suffixes: .sql     # migration 파일 확장자 지정 (선택적)
+    encoding: UTF-8                  # SQL 파일 인코딩
+    clean-disabled: false             # clean 명령 비활성화 여부
+
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
@@ -19,10 +28,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 
 # JWT 설정 (개발용)
 jwt:
@@ -30,13 +39,18 @@ jwt:
   secret: ${JWT_SECRET:dGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3Ro}
   expiration: 3600 # 1시간
 
+# OAuth2 설정 (개발용)
+app:
+  oauth2:
+    authorized-redirect-uris: http://localhost:3000/oauth2/redirect
+
 # 로깅 설정
 logging:
   level:
-    com.app.server: INFO
-    org.springframework.security: INFO
-    org.hibernate.SQL: INFO
-    org.hibernate.type.descriptor.sql.BasicBinder: INFO
+    com.app.server: WARN
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
 ---
 spring:
   config:

@@ -32,13 +32,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 2. provider , request user 가져옴.
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         Map<String, Object> attributes = oAuth2User.getAttributes();
-
         // 3. registrationId에 따라 유저 정보를 매핑. UnifiedProviderInfo 형태(registrationId + attributes)로.
         UnifiedProviderInfo providerInfo = mapToUnifiedInfo(registrationId, attributes);
-
         // 4. Unified된 info로 DB에  유저 조회. 없으면 가입.
         User user = findOrRegisterUser(providerInfo);
-
         return new CustomUserPrincipal(user, attributes);
         }
     private UnifiedProviderInfo mapToUnifiedInfo(String registrationId, Map<String,Object> attributes) {
@@ -84,7 +81,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         int count = 1;
         // DB에 중복된 닉네임이 없을 때까지 _1, _2, _3... 붙여봄
         while (userRepository.existsByNickname(finalNickname)) {
-            finalNickname = baseNickname + "_" + count++;
+            finalNickname = baseNickname + "_#" + count++;
         }
         return finalNickname;
     }

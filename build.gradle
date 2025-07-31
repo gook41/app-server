@@ -29,6 +29,7 @@ dependencies {
     // JPA + Hibernate
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.flywaydb:flyway-core'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     // DB (개발: h2 / 운영: postgresql)
     runtimeOnly("com.h2database:h2")
@@ -45,8 +46,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     // 개발단 자동리로드
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    // 테스트
+    // 테스트x
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
     // 직접 만든 properties를 IDE에서 자동완성+문서화+타입 검사.
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     // dto mapstruct

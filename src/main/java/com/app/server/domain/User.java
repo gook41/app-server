@@ -10,12 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames ={"provider","providerId"})
+        @UniqueConstraint(columnNames = {"provider", "providerId"})
 })
 public class User extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -37,6 +36,7 @@ public class User extends BaseTimeEntity {
 
     @Column(length = 255)
     private String providerId;
+
 
     @Builder.Default
     private boolean deleted = false; // delete 필드
