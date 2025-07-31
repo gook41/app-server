@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter // 테스트에서 필요하므로 추가 (실제 운영에서는 JPA Auditing이 자동 설정)
 @ToString
 @MappedSuperclass // "나를 상속받는 자식한테 내 필드들만 물려줄게. 나 자신은 테이블 만들지 마" 라는 뜻.
 @EntityListeners(AuditingEntityListener.class) // 생성/수정 시간을 자동으로 관리해주는 리스너

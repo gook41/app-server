@@ -1,6 +1,9 @@
 spring:
+  profiles:
+    active: dev
   config:
     import: "optional:classpath:oauth.yml" # oauth.yml 파일을 불러옵니다.
+
 ---
 spring:
   config:
@@ -30,10 +33,10 @@ jwt:
 # 로깅 설정
 logging:
   level:
-    com.app.server: DEBUG
-    org.springframework.security: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.app.server: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: INFO
 ---
 spring:
   config:
@@ -62,4 +65,4 @@ spring:
     level:
       com.app.server: INFO
       org.springframework.security: INFO
-      org.hibernate.SQL: WARN
+      org.hibernate.SQL: INFO

@@ -47,6 +47,15 @@ public class RefreshToken {
         this.expiryDate = expiryDate;
     }
 
+    // TokenProvider에서 사용하는 생성자 추가
+    public RefreshToken(User user, String token) {
+        this.user = user;
+        this.userId = user.getId();
+        this.token = token;
+        // 기본 만료 시간: 7일 후
+        this.expiryDate = LocalDateTime.now().plusDays(7);
+    }
+
     // 비즈니스 메서드
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(this.expiryDate);
@@ -58,5 +67,11 @@ public class RefreshToken {
 
     public void revoke() {
         this.revoked = true;
+    }
+
+    // TokenProvider에서 사용하는 토큰 업데이트 메서드
+    public void updateToken(String newToken) {
+        this.token = newToken;
+        this.expiryDate = LocalDateTime.now().plusDays(7); // 새로운 만료 시간 설정
     }
 }

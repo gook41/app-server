@@ -38,6 +38,7 @@ public class User extends BaseTimeEntity {
     @Column(length = 255)
     private String providerId;
 
+    @Builder.Default
     private boolean deleted = false; // delete 필드
 
 }
