@@ -117,3 +117,16 @@ ALTER TABLE outbound_order
 
 ALTER TABLE refresh_token
     ADD CONSTRAINT FK_REFRESH_TOKEN_ON_USERID FOREIGN KEY (user_id) REFERENCES users (id);
+
+ALTER TABLE users
+    ADD provider VARCHAR(20);
+
+ALTER TABLE users
+    ADD provider_id VARCHAR(255);
+
+ALTER TABLE users
+    ADD CONSTRAINT uc_b1906ae7a05077a50ac196a24 UNIQUE (provider, provider_id);
+
+ALTER TABLE users
+ALTER
+COLUMN password SET NULL;

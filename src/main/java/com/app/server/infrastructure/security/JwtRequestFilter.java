@@ -30,6 +30,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final String jwt = getJwtFromRequest(request);
 
+//        if (request.getRequestURI().startsWith("/oauth2/code/")) {
+//            chain.doFilter(request, response);
+//            return;
+//        }
         if (StringUtils.hasText(jwt) && tokenService.validateToken(jwt)) {
             String username = tokenService.getUsernameFromToken(jwt);
 

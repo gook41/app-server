@@ -3,13 +3,12 @@ spring:
     active: dev
   config:
     import: "optional:classpath:oauth.yml" # oauth.yml 파일을 불러옵니다.
-
 ---
 spring:
   config:
     activate:
       on-profile: dev
-
+    import: "optional:classpath:.env" # dev env
   flyway:
     enabled: true                     # flyway 활성화 여부 (기본 true)
     locations: classpath:/resources/db-migration/  # 마이그레이션 SQL 파일 위치

@@ -27,7 +27,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final TokenService tokenService;
     private final ObjectMapper objectMapper;

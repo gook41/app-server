@@ -26,7 +26,7 @@ import java.util.Map;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     private final ObjectMapper objectMapper;
 
@@ -106,7 +106,7 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
             }
         }
 
-        log.error("OAuth2 로그인 실패 - 에러코드: {}, 메시지: {}, 원본 예외: {}", 
+        log.error("OAuth2 로그인 실패 - 에러코드: {}, 메시지: {}, 원본 예외: {}",
                 errorCode, errorMessage, exception.getMessage());
 
         // 프론트엔드로 에러 정보와 함께 리다이렉트
