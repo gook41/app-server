@@ -67,7 +67,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             return UriComponentsBuilder.fromUriString(redirectUri)
                     .queryParam("token", accessToken)
                     .queryParam("refreshToken", refreshToken)
-                    .queryParam("email", URLEncoder.encode(user.getEmail(), StandardCharsets.UTF_8))
+                    .queryParam("email", URLEncoder.encode(user.getEmail(), StandardCharsets.UTF_8)) // 널 허용
                     .queryParam("nickname", URLEncoder.encode(user.getNickname(), StandardCharsets.UTF_8))
                     .queryParam("provider", user.getProvider())
                     .build().toUriString();

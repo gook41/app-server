@@ -21,11 +21,12 @@ public interface OAuth2AttributeMapper {
     default UnifiedProviderInfo toGoogleInfo(Map<String, Object> attributes){
         String providerId = String.valueOf(attributes.get("sub"));
         String provider = "google";
-        String nickname = String.valueOf(attributes.get("openid"));
-        String email = String.valueOf(attributes.get("email"));
+        String nickname = String.valueOf(attributes.get("name"));
         String profile = String.valueOf(attributes.get("profile"));
-        return new UnifiedProviderInfo(providerId, provider, nickname,email,null,profile);
+        String email = String.valueOf(attributes.get("email"));
+        return new UnifiedProviderInfo(providerId, provider, nickname, profile, null, email);
     }
+
 
     // Naver는 (Map)attributes에 'response' 라는 키로 날라옴.
     // 네이버 : 회원이름(선택),이메일, 별명,프로필 사진
@@ -34,10 +35,10 @@ public interface OAuth2AttributeMapper {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
         String providerId = String.valueOf(response.get("id"));
         String provider = "naver";
-        String name = String.valueOf(response.get("name"));
-        String email = String.valueOf(response.get("email"));
         String nickname =  String.valueOf(response.get("nickname"));
         String profileImage = String.valueOf(response.get("profile_image"));
+        String email = String.valueOf(response.get("email"));
+        String name = String.valueOf(response.get("name"));
         return new UnifiedProviderInfo(providerId, provider, nickname, profileImage,name,email);
     }
 
@@ -51,8 +52,8 @@ public interface OAuth2AttributeMapper {
         String providerId = String.valueOf(attributes.get("id"));
         String provider = "kakao";
         String nickname =  String.valueOf(profile.get("nickname"));
-//        String email = String.valueOf(kakaoAccount.get("email")); // 선택
         String profileImage = String.valueOf(profile.get("profile_image_url"));
+//        String email = String.valueOf(kakaoAccount.get("email")); // 선택
         return new UnifiedProviderInfo(providerId, provider, nickname, profileImage,null,null);
     }
 }

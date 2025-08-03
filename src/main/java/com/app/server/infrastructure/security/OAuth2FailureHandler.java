@@ -49,10 +49,8 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) {
-        
         String errorCode = "oauth2_authentication_failed";
         String errorMessage = "OAuth2 로그인에 실패했습니다.";
-
         // OAuth2 관련 예외 처리
         if (exception instanceof OAuth2AuthenticationException) {
             OAuth2AuthenticationException oauth2Exception = (OAuth2AuthenticationException) exception;
@@ -61,7 +59,8 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
             switch (errorCodeFromException) {
                 case "invalid_request":
                     errorCode = "invalid_oauth2_request";
-                    errorMessage = "잘못된 OAuth2 요청입니다.";
+                    errorMessage = "잘못된 OAuth2 요청입니다. req : " ;
+
                     break;
                 case "unauthorized_client":
                     errorCode = "unauthorized_oauth2_client";

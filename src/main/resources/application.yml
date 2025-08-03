@@ -1,16 +1,19 @@
 spring:
   profiles:
-    active: dev
+    active: ${APP_PROFILE:dev}
   config:
     import: "optional:classpath:oauth.yml" # oauth.yml 파일을 불러옵니다.
+
 ---
 spring:
   config:
     activate:
       on-profile: dev
     import: "optional:classpath:.env" # dev env
+
+
   flyway:
-    enabled: true                     # flyway 활성화 여부 (기본 true)
+    enabled: true                  # flyway 활성화 여부 (기본 true)
     locations: classpath:/resources/db-migration/  # 마이그레이션 SQL 파일 위치
     baseline-on-migrate: true         # 기존 데이터베이스가 있을 때 baseline 생성 여부
     baseline-version: 1               # baseline 시작 버전 (기본 1)
@@ -41,15 +44,18 @@ jwt:
 # OAuth2 설정 (개발용)
 app:
   oauth2:
-    authorized-redirect-uris: http://localhost:3000/oauth2/redirect
+    authorized-redirect-uris: http://localhost:3000/login/oauth2/redirect
 
 # 로깅 설정
 logging:
   level:
     com.app.server: WARN
-    org.springframework.security: WARN
     org.hibernate.SQL: WARN
     org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    org.springframework.security: debug
+    org.springframework.security.oauth2: debug
+    org.springframework.security.web.client: debug
+
 ---
 spring:
   config:
