@@ -63,3 +63,36 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// build.gradle 파일 맨 아래에 추가
+// .env 파일을 읽어서 bootRun 태스크의 환경 변수로 주입합니다.
+// 이 코드는 IDE(IntelliJ)와 터미널 모두에서 동일하게 작동합니다.
+
+import org.springframework.boot.gradle.tasks.run.BootRun
+
+// .env 파일을 파싱하는 함수
+def getEnvProperties(path) {
+    def envFile = file(path)
+    if (!envFile.exists()) {
+        println "Warning: .env file not found at $path"
+        return [:]
+    }
+    def props = [:]
+    envFile.eachLine { line ->
+        if (line.trim() && !line.startsWith('#')) {
+            def parts = line.split('=', 2)
+            if (parts.length == 2) {
+                props[parts[0].trim()] = parts[1].trim()
+            }
+        }
+    }
+    return props
+}
+
+// 프로젝트 루트에 있는 .env 파일에서 환경 변수 가져오기
+def envProps = getEnvProperties('.env')
+
+// bootRun 태스크에 환경 변수 추가
+tasks.named('bootRun', BootRun) {
+    environment(envProps)
+}

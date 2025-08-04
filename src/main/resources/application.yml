@@ -1,87 +1,53 @@
+# 모든 프로필에 공통으로 적용되는 설정
 spring:
   profiles:
-    active: ${APP_PROFILE:dev}
-  config:
-    import: "optional:classpath:oauth.yml" # oauth.yml 파일을 불러옵니다.
-
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-    import: "optional:classpath:.env" # dev env
-
-
-  flyway:
-    enabled: true                  # flyway 활성화 여부 (기본 true)
-    locations: classpath:/resources/db-migration/  # 마이그레이션 SQL 파일 위치
-    baseline-on-migrate: true         # 기존 데이터베이스가 있을 때 baseline 생성 여부
-    baseline-version: 1               # baseline 시작 버전 (기본 1)
-    sql-migration-suffixes: .sql     # migration 파일 확장자 지정 (선택적)
-    encoding: UTF-8                  # SQL 파일 인코딩
-    clean-disabled: false             # clean 명령 비활성화 여부
-
-  datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
+    active: ${APP_PROFILE:dev} # 활성화할 프로필을 지정합니다.
   jpa:
-    hibernate:
-      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
         format_sql: false
-
-# JWT 설정 (개발용)
-jwt:
-  # 환경 변수가 없으면 기본값을 사용합니다.
-  secret: ${JWT_SECRET:dGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3RodGVzdFNlY3JldEtleUZvckp1bml0VGVzdGluZ1dpdGgyNTZCaXRzTGVuZ3Ro}
-  expiration: 3600 # 1시간
-
-# OAuth2 설정 (개발용)
-app:
-  oauth2:
-    authorized-redirect-uris: http://localhost:3000/login/oauth2/redirect
-
-# 로깅 설정
-logging:
-  level:
-    com.app.server: WARN
-    org.hibernate.SQL: WARN
-    org.hibernate.type.descriptor.sql.BasicBinder: WARN
-    org.springframework.security: debug
-    org.springframework.security.oauth2: debug
-    org.springframework.security.web.client: debug
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-
-  datasource:
-    url: jdbc:postgresql://db:5432/gook_prod
-    driver-class-name: org.postgresql.Driver
-    username: prod_user
-    password: prod_pass
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
-
-  # JWT 설정 (운영용)
-  jwt:
-    # 운영 환경에서는 반드시 환경 변수로 설정해야 합니다.
-    secret: ${JWT_SECRET}
-    expiration: 3600 # 1시간
-
-  # 로깅 설정
-  logging:
-    level:
-      com.app.server: INFO
-      org.springframework.security: INFO
-      org.hibernate.SQL: INFO
+  security:
+    oauth2:
+          client:
+            registration:
+              google:
+                client-id: ${GOOGLE_CLIENT_ID}
+                client-secret: ${GOOGLE_CLIENT_SECRET}
+                redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+                scope:
+                  - email
+                  - profile
+              naver:
+                client-id: ${NAVER_CLIENT_ID}
+                client-secret: ${NAVER_CLIENT_SECRET}
+                redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+                client-authentication-method: client_secret_post
+                authorization-grant-type: authorization_code
+                scope:
+                  - name
+                  - email
+                  - nickname
+                  - profile_image
+                client-name: Naver
+              kakao:
+                client-id: ${KAKAO_CLIENT_ID}
+                client-secret: ${KAKAO_CLIENT_SECRET}
+                client-authentication-method: client_secret_post
+                authorization-grant-type: authorization_code
+                redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+                scope:
+                  - profile_image
+                  - profile_nickname
+                client-name: Kakao
+            provider:
+              naver:
+                authorization-uri: https://nid.naver.com/oauth2.0/authorize
+                token-uri: https://nid.naver.com/oauth2.0/token
+                user-info-uri: https://openapi.naver.com/v1/nid/me
+                user-name-attribute: response
+              kakao:
+                authorization-uri: https://kauth.kakao.com/oauth/authorize
+                token-uri: https://kauth.kakao.com/oauth/token
+                user-info-uri: https://kapi.kakao.com/v2/user/me
+                user-name-attribute: id

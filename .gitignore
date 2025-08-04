@@ -1,10 +1,10 @@
 
 .gradle
 build/
-!gradle/wrapper/gradle-wrapper.jar
+!src/main/resources/gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-.env
+src/main/resources/.env
 generated/
 
 ### STS ###
@@ -39,3 +39,4 @@ out/
 .vscode/
 
 .prompt/
+.env

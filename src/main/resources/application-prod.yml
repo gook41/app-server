@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/gook_prod
+    driver-class-name: org.postgresql.Driver
+    username: prod_user
+    password: prod_pass
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  # JWT 설정 (운영용)
+  jwt:
+    # 운영 환경에서는 반드시 환경 변수로 설정해야 합니다.
+    secret: ${JWT_SECRET}
+    expiration: 3600 # 1시간
+  # 로깅 설정 (운영용)
+  logging:
+    level:
+      com.app.server: INFO
+      org.springframework.security: INFO
+      org.hibernate.SQL: INFO
+# OAuth2 설정 (개발용)
+app:
+  oauth2:
+    authorized-redirect-uris: https://api.gook41.org/login/oauth2/redirect
