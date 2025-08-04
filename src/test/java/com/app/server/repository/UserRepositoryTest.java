@@ -1,6 +1,7 @@
 package com.app.server.repository;
 
 import com.app.server.domain.User;
+import com.app.server.domain.UserRepository;
 import com.app.server.domain.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

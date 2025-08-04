@@ -1,6 +1,5 @@
 package com.app.server.application.service;
 
-
 import com.app.server.application.mapper.UserMapper;
 import com.app.server.domain.RefreshToken;
 import com.app.server.domain.RefreshTokenRepository;
@@ -43,7 +42,6 @@ public class AuthServiceImpl implements AuthService {
         if (user.isDeleted()) {
             throw new InvalidCredentialsException("삭제된 계정입니다.");
         }
-
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new InvalidCredentialsException();
         }

@@ -1,6 +1,7 @@
-package com.app.server.application.service;
+package com.app.server.service;
 
 import com.app.server.application.mapper.UserMapper;
+import com.app.server.application.service.AuthServiceImpl;
 import com.app.server.domain.User;
 import com.app.server.domain.UserRepository;
 import com.app.server.domain.UserRole;

@@ -22,6 +22,13 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
     Optional<RefreshToken> findByToken(String token);
 
     /**
+     * 사용자 엔티티로 리프레시 토큰 조회 (TokenProvider에서 사용)
+     * @param user 사용자 엔티티
+     * @return RefreshToken 엔티티
+     */
+    Optional<RefreshToken> findByUser(User user);
+
+    /**
      * 사용자 ID로 리프레시 토큰 조회 (최신순)
      * @param userId 사용자 ID
      * @return RefreshToken 리스트
